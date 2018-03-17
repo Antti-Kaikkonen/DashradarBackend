@@ -7,6 +7,9 @@ import org.neo4j.ogm.annotation.Relationship;
 @NodeEntity
 public class TransactionOutput {
 
+    @Relationship(type = "ADDRESS", direction = Relationship.OUTGOING)
+    private Address address;
+
     @GraphId
     private Long id;
 
@@ -19,6 +22,14 @@ public class TransactionOutput {
 
     //private double value;
     private long valueSat;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;
