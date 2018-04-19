@@ -1,7 +1,7 @@
 package com.dashradar.dashradarbackend.repository;
 
-import com.dashradar.dashradarbackend.domain.Address;
 import com.dashradar.dashradarbackend.domain.BlockChainTotals;
+import com.dashradar.dashradarbackend.domain.Transaction;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
@@ -54,6 +54,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     )
     void compute_input_counts();
     
+    @Deprecated
     @Query("MATCH \n"
     + "	 (a:BlockChainTotals)\n"
     + "WHERE\n"
@@ -63,7 +64,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "ORDER BY \n"
     + "	 a.height\n"
     + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:3})\n"
+    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_100_0+"})\n"
     + "WITH\n"
     + "	 a,\n"
     + "	 count(tx) as tx_count\n"
@@ -83,6 +84,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "	 }")
     void compute_mixing_100_0_counts();
     
+    @Deprecated
     @Query("MATCH \n"
     + "	 (a:BlockChainTotals)\n"
     + "WHERE\n"
@@ -92,7 +94,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "ORDER BY \n"
     + "	 a.height\n"
     + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:4})\n"
+    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})\n"
     + "WITH\n"
     + "	 a,\n"
     + "	 count(tx) as tx_count\n"
@@ -112,6 +114,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "	 }")
     void compute_mixing_10_0_counts();
     
+    @Deprecated
     @Query("MATCH \n"
     + "	 (a:BlockChainTotals)\n"
     + "WHERE\n"
@@ -121,7 +124,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "ORDER BY \n"
     + "	 a.height\n"
     + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:5})\n"
+    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_1_0+"})\n"
     + "WITH\n"
     + "	 a,\n"
     + "	 count(tx) as tx_count\n"
@@ -141,6 +144,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "	 }")
     void compute_mixing_1_0_counts();
     
+    @Deprecated
     @Query("MATCH \n"
     + "	 (a:BlockChainTotals)\n"
     + "WHERE\n"
@@ -150,7 +154,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "ORDER BY \n"
     + "	 a.height\n"
     + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:6})\n"
+    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_1+"})\n"
     + "WITH\n"
     + "	 a,\n"
     + "	 count(tx) as tx_count\n"
@@ -170,6 +174,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "	 }")
     void compute_mixing_0_1_counts();
     
+    @Deprecated
     @Query("MATCH \n"
     + "	 (a:BlockChainTotals)\n"
     + "WHERE\n"
@@ -179,7 +184,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "ORDER BY \n"
     + "	 a.height\n"
     + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:7})\n"
+    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_01+"})\n"
     + "WITH\n"
     + "	 a,\n"
     + "	 count(tx) as tx_count\n"
@@ -229,6 +234,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "  }")
     void compute_output_counts();
     
+    @Deprecated
     @Query("MATCH \n"
     + "	 (a:BlockChainTotals)\n"
     + "WHERE\n"
@@ -238,7 +244,7 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     + "ORDER BY \n"
     + "	 a.height\n"
     + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:2})\n"
+    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND+"})\n"
     + "WITH\n"
     + "	 a,\n"
     + "	 count(tx) as tx_count\n"

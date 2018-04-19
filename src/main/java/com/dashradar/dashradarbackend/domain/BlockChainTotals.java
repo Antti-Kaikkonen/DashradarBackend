@@ -40,7 +40,7 @@ public class BlockChainTotals {
     private long total_transaction_size;
 
     private long tx_count;
-
+    
     public long getHeight() {
         return height;
     }
