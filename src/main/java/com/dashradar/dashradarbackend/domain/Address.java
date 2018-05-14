@@ -14,6 +14,9 @@ public class Address {
 
     @Relationship(type = "ADDRESS", direction = Relationship.INCOMING)
     private List<TransactionOutput> transactionOutputs = new ArrayList<>();
+    
+    @Relationship(type = "INCLUDED_IN", direction = Relationship.OUTGOING)
+    private MultiInputHeuristicCluster multiInputHeuristicCluster;
 
     public String getAddress() {
         return address;
@@ -21,6 +24,14 @@ public class Address {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public MultiInputHeuristicCluster getMultiInputHeuristicCluster() {
+        return multiInputHeuristicCluster;
+    }
+
+    public void setMultiInputHeuristicCluster(MultiInputHeuristicCluster multiInputHeuristicCluster) {
+        this.multiInputHeuristicCluster = multiInputHeuristicCluster;
     }
 
     public Long getId() {
