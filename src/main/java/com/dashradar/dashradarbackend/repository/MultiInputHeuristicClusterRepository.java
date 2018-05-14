@@ -17,7 +17,7 @@ public interface MultiInputHeuristicClusterRepository extends Neo4jRepository<Mu
                     + "WITH a "
                     + "MATCH (cluster:MultiInputHeuristicCluster) WHERE ID(cluster)={0} "
                     + "WITH a, cluster "
-                    + "MERGE (a)<-[:INCLUDED_IN]-(cluster)"
+                    + "MERGE (a)-[:INCLUDED_IN]->(cluster)"
                     + "ON CREATE SET cluster.clusterSize = cluster.clusterSize + 1;"
     )
     public void addAddressToCluster(Long clusterId, String address);
