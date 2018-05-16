@@ -38,18 +38,19 @@ public class MultiInputHeuristicClusterServiceImpl implements MultiInputHeuristi
         
         if (biggestCluster.isPresent()) {
             long biggestClusterId = biggestCluster.get().clusterId;
-            Set<String> addressesToAdd = addressClustersOfTransaction.stream()
-                    .filter(e -> e.clusterId == null || e.clusterId != biggestClusterId)
+            Set<String> nonClusterAddresses = addressClustersOfTransaction.stream()
+                    .filter(e -> e.clusterId == null) //|| e.clusterId != biggestClusterId)
                     .flatMap(e -> e.addresses.stream()).collect(Collectors.toSet());
             long biggestClusterSize = (long)biggestCluster.get().clusterSize;
-            long newClusterSize = biggestClusterSize+addressesToAdd.size();
-            Set<Long> clustersToRemove = addressClustersOfTransaction.stream().map(e -> e.clusterId).filter(e -> e != null && e != biggestClusterId).collect(Collectors.toSet());
+            long newClusterSize = biggestClusterSize+nonClusterAddresses.size();
+            Set<Long> clustersToMerge = addressClustersOfTransaction.stream().map(e -> e.clusterId).filter(e -> e != null && e != biggestClusterId).collect(Collectors.toSet());
             //System.out.println("removing "+clustersToRemove.size()+" clusters");
-            for (Long clusterToRemove : clustersToRemove) {
-                multiInputHeuristicClusterRepository.detachDeleteCluster(clusterToRemove);
+            for (Long clusterToRemove : clustersToMerge) {
+                multiInputHeuristicClusterRepository.mergeClusterToCluster(clusterToRemove, biggestClusterId);
+                //multiInputHeuristicClusterRepository.detachDeleteCluster(clusterToRemove);
             }
             //System.out.println("adding "+addressesToAdd.size()+" addresses");
-            for (String addressToAdd : addressesToAdd) {
+            for (String addressToAdd : nonClusterAddresses) {
                 multiInputHeuristicClusterRepository.addAddressToCluster(biggestClusterId, addressToAdd);
             }
         } else {

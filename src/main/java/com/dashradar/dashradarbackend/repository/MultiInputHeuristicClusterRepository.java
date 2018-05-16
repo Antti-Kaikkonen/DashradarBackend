@@ -33,6 +33,18 @@ public interface MultiInputHeuristicClusterRepository extends Neo4jRepository<Mu
     public void createClusterWithAddresses(Set<String> addresses);
     
     @Query(
+            "MATCH (a:Address)-[:INCLUDED_IN]->(fromCluster:MultiInputHeuristicCluster) WHERE ID(fromCluster)={0} "
+            + "WITH collect(a) as addresses, fromCluster "
+            + "MATCH (toCluster:MultiInputHeuristicCluster) WHERE ID(toCluster)={1} "
+            + "DETACH DELETE fromCluster "
+            + "SET toCluster.clusterSize = toCluster.clusterSize+size(addresses) "        
+            + "WITH addresses, toCluster "
+            + "UNWIND addresses as address "
+            + "CREATE (address)-[:INCLUDED_IN]->(toCluster);"
+    )
+    public void mergeClusterToCluster(long fromClusterId, long toClusterId);
+    
+    @Query(
             "MATCH (cluster:MultiInputHeuristicCluster) WHERE ID(cluster)={0} DETACH DELETE cluster;"
     )
     public void detachDeleteCluster(long clusterid);
