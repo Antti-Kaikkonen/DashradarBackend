@@ -18,7 +18,10 @@ public interface BlockRepository extends Neo4jRepository<Block, Long> {
             "MATCH (b:Block { hash:{0} })<-[:PREVIOUS*]-(subsequentBlock:Block)<-[:INCLUDED_IN]-(tx:Transaction) "
             + "WITH subsequentBlock, tx "
             + "MATCH (input:TransactionInput)-[:INPUT]->(tx)-[:OUTPUT]->(output:TransactionOutput) "
-            + "DETACH DELETE subsequentBlock, tx, input, output")
+            + "WITH subsequentBlock, tx, input, output "
+            + "OPTIONAL MATCH (tx)-[:CREATES]->(balanceEvent:BalanceEvent) "
+            + "DETACH DELETE subsequentBlock, tx, input, output, balanceEvent"
+    )
     Block deleteSubsequentBlocks(String hash);
 
 }

@@ -22,5 +22,9 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
             "MATCH \n"
             + "	(spentOutput:TransactionOutput)-[:SPENT_IN]->(input:TransactionInput {pstype: -1})-[:INPUT]->(tx:Transaction {txid: -1})-[:OUTPUT]->(output:TransactionOutput)")
     Transaction findMixingTransaction();
-
+    
+    @Query(
+            "MATCH (:Block {height:{0}})<-[:INCLUDED_IN]-(tx:Transaction) RETURN tx.txid ORDER BY tx.n;"
+    )
+    List<String> findBlockTxIds(long blockheight);
 }

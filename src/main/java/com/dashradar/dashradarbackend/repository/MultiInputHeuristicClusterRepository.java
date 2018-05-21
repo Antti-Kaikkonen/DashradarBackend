@@ -49,6 +49,11 @@ public interface MultiInputHeuristicClusterRepository extends Neo4jRepository<Mu
     )
     public void detachDeleteCluster(long clusterid);
     
+    @Query(
+            "MATCH (c:MultiInputHeuristicCluster)<-[:INCLUDED_IN]-(:Address)<-[:ADDRESS]-(:TransactionOutput)-[:SPENT_IN]->(:TransactionInput)<-[:INPUT]-(tx:Transaction {txid:{0}})\n"
+            + "RETURN ID(c);"
+    )
+    public List<Long> clusterOfTransaction(String txid);
     
     @Query(
             "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block {height:{0}}) WHERE tx.pstype < 3 OR tx.pstype > 7 RETURN tx.txid;"

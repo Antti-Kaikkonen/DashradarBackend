@@ -29,10 +29,19 @@ public class Transaction {
 
     public static final int PRIVATE_SEND_NONE = 0;
 
+    /**
+     * Used only temporarily when importing the blockchain
+     */
     public static final int PRIVATE_SEND_POTENTIALLY_MIXING = -1;
 
+    /**
+     * Used only temporarily when importing the blockchain
+     */
     public static final int PRIVATE_SEND_POTENTIALLY_PRIVATE_SEND = -2;
 
+    @Relationship(type = "CREATES", direction = Relationship.OUTGOING)
+    private List<BalanceEvent> balanceEvents = new ArrayList<>();
+    
     @Relationship(type = "INCLUDED_IN", direction = Relationship.OUTGOING)
     private Block block;
 
@@ -42,6 +51,8 @@ public class Transaction {
     private Long id;
 
     private long locktime;
+    
+    private int n;
 
     @Relationship(type = "PREVIOUS_ROUND", direction = Relationship.OUTGOING)
     private List<Transaction> previousRounds = new ArrayList<>();
@@ -53,7 +64,7 @@ public class Transaction {
     private String txid;
 
     private int version;
-
+   
     @Relationship(type = "INPUT", direction = Relationship.INCOMING)
     private List<TransactionInput> vin = new ArrayList<>();
 
@@ -90,6 +101,14 @@ public class Transaction {
 
     public void setLocktime(long locktime) {
         this.locktime = locktime;
+    }
+    
+    public int getN() {
+        return n;
+    }
+
+    public void setN(int n) {
+        this.n = n;
     }
 
     public List<Transaction> getPreviousRounds() {

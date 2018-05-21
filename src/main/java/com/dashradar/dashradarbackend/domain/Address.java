@@ -12,6 +12,12 @@ public class Address {
 
     private Long id;
 
+    @Relationship(type = "CURRENT_BALANCE", direction = Relationship.OUTGOING)
+    private BalanceEvent currentBalance;
+    
+    @Relationship(type = "INCLUDED_IN", direction = Relationship.INCOMING)
+    private List<BalanceEvent> balanceEvents = new ArrayList<>();
+    
     @Relationship(type = "ADDRESS", direction = Relationship.INCOMING)
     private List<TransactionOutput> transactionOutputs = new ArrayList<>();
     
@@ -40,6 +46,22 @@ public class Address {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public BalanceEvent getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(BalanceEvent currentBalance) {
+        this.currentBalance = currentBalance;
+    }
+
+    public List<BalanceEvent> getBalanceEvents() {
+        return balanceEvents;
+    }
+
+    public void setBalanceEvents(List<BalanceEvent> balanceEvents) {
+        this.balanceEvents = balanceEvents;
     }
 
     public List<TransactionOutput> getTransactionOutputs() {
