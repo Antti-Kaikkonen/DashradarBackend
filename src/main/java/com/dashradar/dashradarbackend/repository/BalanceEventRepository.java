@@ -39,21 +39,11 @@ public interface BalanceEventRepository extends Neo4jRepository<BalanceEvent, Lo
             "CREATE (a)-[:CURRENT_BALANCE]->(b);"
     )
     public void changeAdderssBalance(String txid, String address, long balanceChange);
-   
-    
-    @Query(
-            //"MATCH (b:Block)<-[:INCLUDED_IN]-(:Transaction)-[:CREATES]->(:BalanceEvent) RETURN max(b.height) as maxHeight;"
-            "MATCH (m:Meta) RETURN m.lastBlockHeightWithBalanceEvent;"
-    )
-    public List<Long> lastBlockContainingBalanceEvent();
     
     @Query(
             "MATCH (b:Block)<-[:INCLUDED_IN]-(:Transaction)-[:CREATES]->(:BalanceEvent) RETURN max(b.height) as maxHeight;"
     )
     public List<Long> lastBlockContainingBalanceEventOld();
     
-    @Query(
-            "MERGE (m:Meta) SET m.lastBlockHeightWithBalanceEvent = {0};"
-    )
-    public void saveBlockHeightToMeta(long blockHeight);
+   
 }

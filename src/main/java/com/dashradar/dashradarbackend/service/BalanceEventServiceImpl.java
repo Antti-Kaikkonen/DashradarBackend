@@ -2,6 +2,7 @@ package com.dashradar.dashradarbackend.service;
 
 import com.dashradar.dashradarbackend.domain.dto.AddressBalanceChange;
 import com.dashradar.dashradarbackend.repository.BalanceEventRepository;
+import com.dashradar.dashradarbackend.repository.MetaRepository;
 import com.dashradar.dashradarbackend.repository.TransactionRepository;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,9 @@ public class BalanceEventServiceImpl implements BalanceEventService {
     
     @Autowired
     private TransactionRepository transactionRepository;
+    
+    @Autowired
+    private MetaRepository metaRepository;
 
     @Override
     @Transactional
@@ -27,17 +31,17 @@ public class BalanceEventServiceImpl implements BalanceEventService {
         for (String txid : findBlockTxIds) {
             this.createBalances(txid);
         }
-        balanceEventRepository.saveBlockHeightToMeta(blockheight);
+        metaRepository.setLastBlockHeightWithBalanceEvent(blockheight);
     }
 
     @Override
     public void setLastBlockContainingBalanceEvent(long height) {
-        balanceEventRepository.saveBlockHeightToMeta(height);
+        metaRepository.setLastBlockHeightWithBalanceEvent(height);
     }
 
     @Override
     public Long lastBlockContainingBalanceEvent() {
-        List<Long> res = balanceEventRepository.lastBlockContainingBalanceEvent();
+        List<Long> res = metaRepository.lastBlockContainingBalanceEvent();
         if (res.isEmpty()) {
             res = balanceEventRepository.lastBlockContainingBalanceEventOld();
             if (res.isEmpty()) {

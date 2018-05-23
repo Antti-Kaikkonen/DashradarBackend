@@ -1,5 +1,7 @@
 package com.dashradar.dashradarbackend.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -13,7 +15,10 @@ public class Day {
     private Long id;
 
     @Relationship(type = "LAST_BLOCK", direction = Relationship.OUTGOING)
-    private Block lastBlock;
+    private BlockChainTotals lastBlock;
+    
+    @Relationship(type = "DAILY_PERCENTILES", direction = Relationship.OUTGOING)
+    private List<DailyPercentiles> dailyPercentiles = new ArrayList<>();
 
     public long getDay() {
         return day;
@@ -29,6 +34,22 @@ public class Day {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public BlockChainTotals getLastBlock() {
+        return lastBlock;
+    }
+
+    public void setLastBlock(BlockChainTotals lastBlock) {
+        this.lastBlock = lastBlock;
+    }
+
+    public List<DailyPercentiles> getDailyPercentiles() {
+        return dailyPercentiles;
+    }
+
+    public void setDailyPercentiles(List<DailyPercentiles> dailyPercentiles) {
+        this.dailyPercentiles = dailyPercentiles;
     }
 
 }
