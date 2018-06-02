@@ -7,7 +7,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 @NodeEntity
-public class Block {
+public class Block {//BestBlock (current tip) also has "BestBlock" label
 
     private String bits;
 

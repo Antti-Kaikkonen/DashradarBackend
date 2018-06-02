@@ -13,7 +13,31 @@ public interface BlockRepository extends Neo4jRepository<Block, Long> {
 
     @Query("MATCH (b:Block { hash:{0} }) RETURN b")
     Block findBlockByHash(String hash);
+    
+    @Query("MATCH (b:Block { hash:{0} }) RETURN b.height")
+    Long findBlockHeightByHash(String hash);
+    
+    @Query("MATCH (b:BestBlock) RETURN b.hash;")
+    String findBestBlockHash();
+    
+    @Query(
+            "MATCH (oldTip:BestBlock) "+
+            "CREATE (oldTip)<-[:PREVIOUS_BLOCK]-(newTip:Block:BestBlock) "+
+            "REMOVE oldTip:BestBlock "+
+            "SET newTip = { "+
+            "  bits: {0}, chainwork: {1}, difficulty: {2}, hash: {3}, height: {4}, mediantime: {5}, merkleroot: {6}, nonce: {7}, size: {8}, time: {9}, version: {10} "+
+            "}"
+    )
+    void createEmptyBestBlock(String bits, String chainwork, double difficulty, String hash, long height, long mediantime, String merkleroot, long nonce, long size, long time, int version);
 
+    @Query(
+            "CREATE (newTip:Block:BestBlock) "+
+            "SET newTip = { "+
+            "  bits: {0}, chainwork: {1}, difficulty: {2}, hash: {3}, height: {4}, mediantime: {5}, merkleroot: {6}, nonce: {7}, size: {8}, time: {9}, version: {10} "+
+            "}"
+    )
+    void createGenesisBlock(String bits, String chainwork, double difficulty, String hash, long height, long mediantime, String merkleroot, long nonce, long size, long time, int version);
+    
     @Query(
             "MATCH (b:Block { hash:{0} })<-[:PREVIOUS*]-(subsequentBlock:Block)<-[:INCLUDED_IN]-(tx:Transaction) "
             + "WITH subsequentBlock, tx "

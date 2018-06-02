@@ -53,7 +53,7 @@ public class BalanceEventServiceImpl implements BalanceEventService {
     
     
     @Transactional
-    private void createBalances(String txid) {
+    public void createBalances(String txid) {
         List<AddressBalanceChange> inputs = balanceEventRepository.findAddressBalanceChangesOfTransactionInputs(txid);
         List<AddressBalanceChange> outputs = balanceEventRepository.findAddressBalanceChangesOfTransactionOutputs(txid);
         Map<String, Long> addressToDelta = new HashMap<>();
