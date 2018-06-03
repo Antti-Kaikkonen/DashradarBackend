@@ -28,7 +28,7 @@ public class Block {//BestBlock (current tip) also has "BestBlock" label
 
     private long nonce;
 
-    @Relationship(type = "PREVIOUS", direction = Relationship.OUTGOING)
+    @Relationship(type = "PREVIOUS_BLOCK", direction = Relationship.OUTGOING)
     private Block previousBlock;
 
     private long size;

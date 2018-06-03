@@ -15,7 +15,7 @@ public class Day {
     private Long id;
 
     @Relationship(type = "LAST_BLOCK", direction = Relationship.OUTGOING)
-    private BlockChainTotals lastBlock;
+    private Block lastBlock;
     
     @Relationship(type = "DAILY_PERCENTILES", direction = Relationship.OUTGOING)
     private List<DailyPercentiles> dailyPercentiles = new ArrayList<>();
@@ -36,11 +36,11 @@ public class Day {
         this.id = id;
     }
 
-    public BlockChainTotals getLastBlock() {
+    public Block getLastBlock() {
         return lastBlock;
     }
 
-    public void setLastBlock(BlockChainTotals lastBlock) {
+    public void setLastBlock(Block lastBlock) {
         this.lastBlock = lastBlock;
     }
 
