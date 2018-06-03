@@ -24,518 +24,209 @@ public interface PrivateSendTotalsRepository extends Neo4jRepository<PrivateSend
     void create_privatesend_totals();
     
     
-    @Query("MATCH \n"
-    + "	 (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "	 NOT exists(a.privatesend_mixing_100_0_count)\n"
-    + "WITH\n"
-    + "	 a\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_100_0+"})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(tx) as tx_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 tx_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_100_0_count: coalesce(previousTotals.privatesend_mixing_100_0_count, 0) + tx_count\n"
-    + "	 }")
-    void compute_mixing_100_0_counts();
-    
-    @Query("MATCH \n"
-    + "	 (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "	 NOT exists(a.privatesend_mixing_10_0_count)\n"
-    + "WITH\n"
-    + "	 a\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(tx) as tx_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 tx_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_10_0_count: coalesce(previousTotals.privatesend_mixing_10_0_count, 0) + tx_count\n"
-    + "	 }")
-    void compute_mixing_10_0_counts();
-    
-    @Query("MATCH \n"
-    + "	 (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "	 NOT exists(a.privatesend_mixing_1_0_count)\n"
-    + "WITH\n"
-    + "	 a\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_1_0+"})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(tx) as tx_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 tx_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "	   privatesend_mixing_1_0_count: coalesce(previousTotals.privatesend_mixing_1_0_count, 0) + tx_count\n"
-    + "	 }")
-    void compute_mixing_1_0_counts();
-    
-    @Query("MATCH \n"
-    + "	 (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "	 NOT exists(a.privatesend_mixing_0_1_count)\n"
-    + "WITH\n"
-    + "	 a\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_1+"})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(tx) as tx_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 tx_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "	   privatesend_mixing_0_1_count: coalesce(previousTotals.privatesend_mixing_0_1_count, 0) + tx_count\n"
-    + "	 }")
-    void compute_mixing_0_1_counts();
-    
-    @Query("MATCH \n"
-    + "	 (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "	 NOT exists(a.privatesend_mixing_0_01_count)\n"
-    + "WITH\n"
-    + "	 a\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_01+"})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(tx) as tx_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 tx_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "	   privatesend_mixing_0_01_count: coalesce(previousTotals.privatesend_mixing_0_01_count, 0) + tx_count\n"
-    + "	 }")
-    void compute_mixing_0_01_counts();
-    
-    
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_0_01_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_01+"})-[:OUTPUT]->(output:TransactionOutput)\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_0_01_output_count: coalesce(previousTotals.privatesend_mixing_0_01_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_0_01_output_count();
-    
-    
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_0_1_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_1+"})-[:OUTPUT]->(output:TransactionOutput)\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_0_1_output_count: coalesce(previousTotals.privatesend_mixing_0_1_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_0_1_output_count();
-    
-    
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_1_0_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_1_0+"})-[:OUTPUT]->(output:TransactionOutput)\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_1_0_output_count: coalesce(previousTotals.privatesend_mixing_1_0_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_1_0_output_count();
-    
-    
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_10_0_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})-[:OUTPUT]->(output:TransactionOutput)\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_10_0_output_count: coalesce(previousTotals.privatesend_mixing_10_0_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_10_0_output_count();
-    
-    
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_100_0_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_100_0+"})-[:OUTPUT]->(output:TransactionOutput)\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_100_0_output_count: coalesce(previousTotals.privatesend_mixing_100_0_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_100_0_output_count();
-    
-    
-    
-    @Query("MATCH \n"
-    + "	 (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "	 NOT exists(a.privatesend_tx_input_count)\n"
-    + "WITH\n"
-    + "	 a\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND+"})<-[:INPUT]-(input:TransactionInput)\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(input) as input_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 input_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "	  privatesend_tx_input_count: coalesce(previousTotals.privatesend_tx_input_count, 0) + input_count\n"
-    + "	 }"
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_100_0+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_100_0_count, 0)+count(tx) as tx_count\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_100_0_count: tx_count};"
     )
-    void compute_privatesend_tx_input_count();
+    void compute_mixing_100_0_counts(String blockhash);
+    
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_10_0_count, 0)+count(tx) as tx_count\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_10_0_count: tx_count};"
+    )
+    void compute_mixing_10_0_counts(String blockhash);
+    
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_1_0+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_1_0_count, 0)+count(tx) as tx_count\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_1_0_count: tx_count};"
+    )
+    void compute_mixing_1_0_counts(String blockhash);
+    
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_1+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_0_1_count, 0)+count(tx) as tx_count\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_0_1_count: tx_count};"
+    )
+    void compute_mixing_0_1_counts(String blockhash);
+    
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_01+"})\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_0_01_count, 0)+count(tx) as tx_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_0_01_count: tx_count};"
+    )
+    void compute_mixing_0_01_counts(String blockhash);
     
     
-    @Query("MATCH \n"
-    + "	 (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "	 NOT exists(a.privatesend_tx_count)\n"
-    + "WITH\n"
-    + "	 a\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND+"})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(tx) as tx_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 tx_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "	   privatesend_tx_count: coalesce(previousTotals.privatesend_tx_count, 0) + tx_count\n"
-    + "	 }")
-    void compute_privatesend_tx_count();
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_01+"})-[:OUTPUT]->(output:TransactionOutput)\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_0_01_output_count, 0)+count(output) as output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_0_01_output_count: output_count};"
+    )
+    void compute_privatesend_mixing_0_01_output_count(String blockhash);
+    
+    
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_1+"})-[:OUTPUT]->(output:TransactionOutput)\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_0_1_output_count, 0)+count(output) as output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_0_1_output_count: output_count};"
+    )
+    void compute_privatesend_mixing_0_1_output_count(String blockhash);
+    
+    
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_1_0+"})-[:OUTPUT]->(output:TransactionOutput)\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_1_0_output_count, 0)+count(output) as output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_1_0_output_count: output_count};"
+    )
+    void compute_privatesend_mixing_1_0_output_count(String blockhash);
+    
+    
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})-[:OUTPUT]->(output:TransactionOutput)\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_10_0_output_count, 0)+count(output) as output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_10_0_output_count: output_count};"
+    )
+    void compute_privatesend_mixing_10_0_output_count(String blockhash);
+    
+    
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})-[:OUTPUT]->(output:TransactionOutput)\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_100_0_output_count, 0)+count(output) as output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_100_0_output_count: output_count};"
+    )
+    void compute_privatesend_mixing_100_0_output_count(String blockhash);
+    
+    
+    
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND+"})<-[:INPUT]-(input:TransactionInput)\n" +
+    "WITH b, coalesce(previousTotals.privatesend_tx_input_count, 0)+count(input) as input_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_tx_input_count: input_count};"
+    )
+    void compute_privatesend_tx_input_count(String blockhash);
+    
+    
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND+"})\n" +
+    "WITH b, coalesce(previousTotals.privatesend_tx_count, 0)+count(tx) as tx_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_tx_count: tx_count};"
+    )
+    void compute_privatesend_tx_count(String blockhash);
     
     
     
     
     
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_0_01_spent_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(input:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(:Transaction {pstype: "+Transaction.PRIVATE_SEND_MIXING_0_01+"})\n"     
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_0_01_spent_output_count: coalesce(previousTotals.privatesend_mixing_0_01_spent_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_0_01_spent_output_count();
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_01+"})\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_0_01_spent_output_count, 0) + count(output) as spent_output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_0_01_spent_output_count: spent_output_count};"
+    )
+    void compute_privatesend_mixing_0_01_spent_output_count(String blockhash);
     
     
     
     
     
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_0_1_spent_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(input:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(:Transaction {pstype: "+Transaction.PRIVATE_SEND_MIXING_0_1+"})\n"     
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_0_1_spent_output_count: coalesce(previousTotals.privatesend_mixing_0_1_spent_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_0_1_spent_output_count();
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_1+"})\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_0_1_spent_output_count, 0) + count(output) as spent_output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_0_1_spent_output_count: spent_output_count};"
+    )
+    void compute_privatesend_mixing_0_1_spent_output_count(String blockhash);
     
     
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_1_0_spent_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(input:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(:Transaction {pstype: "+Transaction.PRIVATE_SEND_MIXING_1_0+"})\n"     
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_1_0_spent_output_count: coalesce(previousTotals.privatesend_mixing_1_0_spent_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_1_0_spent_output_count();
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_1_0+"})\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_1_0_spent_output_count, 0) + count(output) as spent_output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_1_0_spent_output_count: spent_output_count};"
+    )
+    void compute_privatesend_mixing_1_0_spent_output_count(String blockhash);
     
     
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_10_0_spent_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(input:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(:Transaction {pstype: "+Transaction.PRIVATE_SEND_MIXING_10_0+"})\n"     
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_10_0_spent_output_count: coalesce(previousTotals.privatesend_mixing_10_0_spent_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_10_0_spent_output_count();
+    @Query(
+    "MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_10_0_spent_output_count, 0) + count(output) as spent_output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_10_0_spent_output_count: spent_output_count};"
+    )
+    void compute_privatesend_mixing_10_0_spent_output_count(String blockhash);
     
     
-    @Query("MATCH \n"
-    + "  (a:PrivateSendTotals)\n"
-    + "WHERE\n"
-    + "  NOT exists(a.privatesend_mixing_100_0_spent_output_count)\n"
-    + "WITH\n"
-    + "  a\n"
-    + "ORDER BY \n"
-    + "  a.height\n"
-    + "OPTIONAL MATCH \n"
-    + "	 (b:Block {height: a.height})<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(input:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(:Transaction {pstype: "+Transaction.PRIVATE_SEND_MIXING_100_0+"})\n"     
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 count(output) as output_count\n"
-    + "ORDER BY \n"
-    + "	 a.height\n"
-    + "OPTIONAL MATCH\n"
-    + "	 (previousTotals:PrivateSendTotals {height: a.height-1})\n"
-    + "WITH\n"
-    + "	 a,\n"
-    + "	 output_count,\n"
-    + "	 previousTotals\n"
-    + "ORDER BY\n"
-    + "	 a.height\n"
-    + "SET\n"
-    + "	 a += {\n"
-    + "    privatesend_mixing_100_0_spent_output_count: coalesce(previousTotals.privatesend_mixing_100_0_spent_output_count, 0) + output_count\n"
-    + "  }")
-    void compute_privatesend_mixing_100_0_spent_output_count();
+    @Query("MATCH (b:Block {hash:{0}})\n" +
+    "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+    "WITH b, previousTotals\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction)<-[:INPUT]-(:TransactionInput)<-[:SPENT_IN]-(output:TransactionOutput)<-[:OUTPUT]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_100_0+"})\n" +
+    "WITH b, coalesce(previousTotals.privatesend_mixing_100_0_spent_output_count, 0) + count(output) as spent_output_count\n" +
+    "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+    "SET pst += {privatesend_mixing_100_0_spent_output_count: spent_output_count};")
+    void compute_privatesend_mixing_100_0_spent_output_count(String blockhash);
     
     
     

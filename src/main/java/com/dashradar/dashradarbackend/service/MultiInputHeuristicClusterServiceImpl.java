@@ -33,7 +33,6 @@ public class MultiInputHeuristicClusterServiceImpl implements MultiInputHeuristi
     public void clusterizeTransaction(String txid) {
         
         List<TransactionClusterData> addressClustersOfTransaction = multiInputHeuristicClusterRepository.addressClustersOfTransaction(txid);
-
         Optional<TransactionClusterData> biggestCluster = addressClustersOfTransaction.stream().filter(e -> e.clusterId != null && e.clusterSize != null).max((a, b) -> Long.compare(a.clusterSize, b.clusterSize));
         
         if (biggestCluster.isPresent()) {

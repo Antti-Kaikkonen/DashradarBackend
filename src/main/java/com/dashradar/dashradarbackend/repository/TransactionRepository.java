@@ -51,6 +51,21 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
             int version,
             String blockhash);
     
+    
+    @Query(
+        "MATCH (spentOutput:TransactionOutput)-[:SPENT_IN]->(:TransactionInput)-[:INPUT]->(tx:Transaction {txid:{0}})-[:OUTPUT]->(output:TransactionOutput)\n" +
+        "WITH tx, sum(spentOutput.valueSat)-sum(output.valueSat) as tx_fee\n" +
+        "SET tx.feesSat = tx_fee;"
+    )
+    void compute_tx_fee(String txid);
+    
+    @Query(
+    "MATCH (b:Block {hash:{0}})<-[:INCLUDED_IN]-(tx1:Transaction {pstype:{1}})<-[:INPUT]-(i:TransactionInput)<-[:SPENT_IN]-(o:TransactionOutput)<-[:OUTPUT]-(tx2:Transaction {pstype:{1}})\n" +
+    "WITH tx1,tx2, count(o) as rel_count\n" +
+    "CREATE (tx1)-[:PREVIOUS_ROUND {connections:rel_count}]->(tx2);"
+    )
+    void create_previous_connections(String blockhash, int pstype);
+    
     @Query("MATCH (tx:Transaction {txid:{0}})-[r:INCLUDED_IN]->(mempoo:Mempool) "+
            "DELETE r WITH tx MATCH (block:Block {hash:{1}}) CREATE (tx)-[:INCLUDED_IN]->(block);")
     void moveMempooTransactionToBlock(String txid, String blockHash);
