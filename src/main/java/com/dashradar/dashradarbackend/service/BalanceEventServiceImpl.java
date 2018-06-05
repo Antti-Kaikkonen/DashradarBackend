@@ -1,6 +1,7 @@
 package com.dashradar.dashradarbackend.service;
 
 import com.dashradar.dashradarbackend.domain.dto.AddressBalanceChange;
+import com.dashradar.dashradarbackend.repository.AddressRepository;
 import com.dashradar.dashradarbackend.repository.BalanceEventRepository;
 import com.dashradar.dashradarbackend.repository.MetaRepository;
 import com.dashradar.dashradarbackend.repository.TransactionRepository;
@@ -23,6 +24,9 @@ public class BalanceEventServiceImpl implements BalanceEventService {
     
     @Autowired
     private MetaRepository metaRepository;
+    
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Override
     @Transactional
@@ -40,6 +44,15 @@ public class BalanceEventServiceImpl implements BalanceEventService {
     }
 
     @Override
+    public void handleUnorphanedBlock(String blockhash) {
+        List<String> addresses = addressRepository.findBlockAddresses(blockhash);
+        for (String address: addresses) {
+            balanceEventRepository.deleteCurrentBalance(address);
+            balanceEventRepository.updateCurrentBalance(address);
+        }
+    }
+
+    @Override
     public Long lastBlockContainingBalanceEvent() {
         List<Long> res = metaRepository.lastBlockContainingBalanceEvent();
         if (res.isEmpty()) {
@@ -49,6 +62,15 @@ public class BalanceEventServiceImpl implements BalanceEventService {
             }    
         }
         return res.get(0);
+    }
+    
+    @Transactional
+    @Override
+    public void handleOrphanedBlocks() {
+        List<String> addresses = balanceEventRepository.deleteCurrentBalanceFromOrphanedBlocks();
+        for (String address: addresses) {
+            balanceEventRepository.updateCurrentBalance(address);
+        }
     }
     
     

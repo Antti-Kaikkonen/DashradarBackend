@@ -39,13 +39,30 @@ public interface BlockRepository extends Neo4jRepository<Block, Long> {
     void createGenesisBlock(String bits, String chainwork, double difficulty, String hash, long height, long mediantime, String merkleroot, long nonce, long size, long time, int version);
     
     @Query(
-            "MATCH (b:Block { hash:{0} })<-[:PREVIOUS*]-(subsequentBlock:Block)<-[:INCLUDED_IN]-(tx:Transaction) "
+            "MATCH (b:Block { hash:{0} })<-[:PREVIOUS_BLOCK*]-(subsequentBlock:Block)<-[:INCLUDED_IN]-(tx:Transaction) "
             + "WITH subsequentBlock, tx "
             + "MATCH (input:TransactionInput)-[:INPUT]->(tx)-[:OUTPUT]->(output:TransactionOutput) "
             + "WITH subsequentBlock, tx, input, output "
             + "OPTIONAL MATCH (tx)-[:CREATES]->(balanceEvent:BalanceEvent) "
             + "DETACH DELETE subsequentBlock, tx, input, output, balanceEvent"
     )
-    Block deleteSubsequentBlocks(String hash);
+    void deleteSubsequentBlocks(String hash);
+    
+    @Query(
+    "MATCH (b:Block { hash:{0} })<-[:PREVIOUS_BLOCK*]-(subsequentBlock:Block)\n" +
+    "WITH b, subsequentBlock\n" +
+    "REMOVE subsequentBlock:Block:BestBlock\n" +
+    "SET subsequentBlock:OrphanedBlock\n" +
+    "SET b:BestBlock;"
+    )
+    void orphanSubsequentBlocks(String hash);
+    
+    @Query(
+    "MATCH (b:OrphanedBlock {hash:{0}})\n" +
+    "REMOVE b:OrphanedBlock\n" +
+    "SET b:Block\n" +
+    "RETURN true;"
+    )
+    Boolean unorhanBlock(String blockhash);
 
 }

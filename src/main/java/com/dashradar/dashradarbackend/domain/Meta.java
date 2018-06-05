@@ -9,7 +9,6 @@ public class Meta {
     @GraphId
     private Long id;
     
-    long lastBlockHeightWithBalanceEvent;
 
     public Long getId() {
         return id;
@@ -17,14 +16,6 @@ public class Meta {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public long getLastBlockHeightWithBalanceEvent() {
-        return lastBlockHeightWithBalanceEvent;
-    }
-
-    public void setLastBlockHeightWithBalanceEvent(long lastBlockHeightWithBalanceEvent) {
-        this.lastBlockHeightWithBalanceEvent = lastBlockHeightWithBalanceEvent;
     }
 
 }

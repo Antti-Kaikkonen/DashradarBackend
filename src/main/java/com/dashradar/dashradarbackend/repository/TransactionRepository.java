@@ -53,16 +53,18 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
     
     
     @Query(
-        "MATCH (spentOutput:TransactionOutput)-[:SPENT_IN]->(:TransactionInput)-[:INPUT]->(tx:Transaction {txid:{0}})-[:OUTPUT]->(output:TransactionOutput)\n" +
-        "WITH tx, sum(spentOutput.valueSat)-sum(output.valueSat) as tx_fee\n" +
+        "MATCH (spentOutput:TransactionOutput)-[:SPENT_IN]->(:TransactionInput)-[:INPUT]->(tx:Transaction {txid:{0}})\n" +
+        "WITH tx, sum(spentOutput.valueSat) as inSats\n"+
+        "MATCH (tx)-[:OUTPUT]->(output:TransactionOutput)\n"+
+        "WITH tx, inSats-sum(output.valueSat) as tx_fee\n" +
         "SET tx.feesSat = tx_fee;"
     )
     void compute_tx_fee(String txid);
     
     @Query(
-    "MATCH (b:Block {hash:{0}})<-[:INCLUDED_IN]-(tx1:Transaction {pstype:{1}})<-[:INPUT]-(i:TransactionInput)<-[:SPENT_IN]-(o:TransactionOutput)<-[:OUTPUT]-(tx2:Transaction {pstype:{1}})\n" +
-    "WITH tx1,tx2, count(o) as rel_count\n" +
-    "CREATE (tx1)-[:PREVIOUS_ROUND {connections:rel_count}]->(tx2);"
+        "MATCH (b:Block {hash:{0}})<-[:INCLUDED_IN]-(tx1:Transaction {pstype:{1}})<-[:INPUT]-(i:TransactionInput)<-[:SPENT_IN]-(o:TransactionOutput)<-[:OUTPUT]-(tx2:Transaction {pstype:{1}})\n" +
+        "WITH tx1,tx2, count(o) as rel_count\n" +
+        "CREATE (tx1)-[:PREVIOUS_ROUND {connections:rel_count}]->(tx2);"
     )
     void create_previous_connections(String blockhash, int pstype);
     

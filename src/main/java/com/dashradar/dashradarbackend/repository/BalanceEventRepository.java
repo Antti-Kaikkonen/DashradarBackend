@@ -24,6 +24,28 @@ public interface BalanceEventRepository extends Neo4jRepository<BalanceEvent, Lo
     )
     public List<AddressBalanceChange> findAddressBalanceChangesOfTransactionOutputs(String txid);
     
+
+    @Query(
+            "MATCH (a:Address {address:{0}})<-[:INCLUDED_IN]-(be:BalanceEvent)<-[:CREATES]-(tx:Transaction)-[:INCLUDED_IN]->(b:Block)\n"+
+            "WITH a, be ORDER BY b.height DESC, tx.n DESC LIMIT 1\n"+
+            "MERGE (a)-[:CURRENT_BALANCE]->(be);"
+    )
+    public void updateCurrentBalance(String address);
+    
+    @Query(
+            "(a:Address {address:{0}})-[c:CURRENT_BALANCE]->(:BalanceEvent)\n"+
+            "DELETE c;"
+    )
+    public void deleteCurrentBalance(String address);
+    
+    
+    @Query(
+            "MATCH (:OrphanedBlock)<-[:INCLUDED_IN]-(:Transaction)-[:CREATES]->(:BalanceEvent)<-[c:CURRENT_BALANCE]-(a:Address)\n"+
+            "DELETE c"+
+            "RETURN a.address"        
+    )
+    public List<String> deleteCurrentBalanceFromOrphanedBlocks();
+    
     
     @Query(
             "MATCH (tx:Transaction {txid:{0}})\n"+

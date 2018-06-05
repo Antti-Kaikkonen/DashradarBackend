@@ -132,7 +132,7 @@ public interface PrivateSendTotalsRepository extends Neo4jRepository<PrivateSend
     "MATCH (b:Block {hash:{0}})\n" +
     "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
     "WITH b, previousTotals\n" +
-    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})-[:OUTPUT]->(output:TransactionOutput)\n" +
+    "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_100_0+"})-[:OUTPUT]->(output:TransactionOutput)\n" +
     "WITH b, coalesce(previousTotals.privatesend_mixing_100_0_output_count, 0)+count(output) as output_count\n" +
     "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
     "SET pst += {privatesend_mixing_100_0_output_count: output_count};"
