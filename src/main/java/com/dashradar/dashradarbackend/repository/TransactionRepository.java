@@ -2,7 +2,6 @@ package com.dashradar.dashradarbackend.repository;
 
 import com.dashradar.dashradarbackend.domain.Transaction;
 import java.util.List;
-import java.util.Map;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.annotation.Depth;
 import org.springframework.data.neo4j.annotation.Query;
