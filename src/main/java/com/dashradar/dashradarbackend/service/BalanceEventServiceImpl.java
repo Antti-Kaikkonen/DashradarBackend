@@ -51,6 +51,7 @@ public class BalanceEventServiceImpl implements BalanceEventService {
         }
     }
 
+
     @Override
     public Long lastBlockContainingBalanceEvent() {
         List<Long> res = metaRepository.lastBlockContainingBalanceEvent();
@@ -67,6 +68,7 @@ public class BalanceEventServiceImpl implements BalanceEventService {
     @Override
     public void handleOrphanedBlocks() {
         List<String> addresses = balanceEventRepository.deleteCurrentBalanceFromOrphanedBlocks();
+        balanceEventRepository.deleteAllBalanceEventsFromOrphanedBlocks();
         for (String address: addresses) {
             balanceEventRepository.updateCurrentBalance(address);
         }
@@ -74,6 +76,7 @@ public class BalanceEventServiceImpl implements BalanceEventService {
     
     
     @Transactional
+    @Override
     public void createBalances(String txid) {
         List<AddressBalanceChange> inputs = balanceEventRepository.findAddressBalanceChangesOfTransactionInputs(txid);
         List<AddressBalanceChange> outputs = balanceEventRepository.findAddressBalanceChangesOfTransactionOutputs(txid);

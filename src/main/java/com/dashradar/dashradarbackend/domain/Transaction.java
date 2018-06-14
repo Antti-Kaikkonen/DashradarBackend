@@ -15,7 +15,7 @@ public class Transaction {
 
     public static final int PRIVATE_SEND_CREATE_DENOMINATIONS = 1;
 
-    public static final int PRIVATE_SEND_MAKE_COLLATERAL_PAYMENTS = 8;
+    public static final int PRIVATE_SEND_MAKE_COLLATERAL_INPUTS = 8;
 
     public static final int PRIVATE_SEND_MIXING_0_01 = 7;
 
@@ -29,15 +29,6 @@ public class Transaction {
 
     public static final int PRIVATE_SEND_NONE = 0;
 
-    /**
-     * Used only temporarily when importing the blockchain
-     */
-    public static final int PRIVATE_SEND_POTENTIALLY_MIXING = -1;
-
-    /**
-     * Used only temporarily when importing the blockchain
-     */
-    public static final int PRIVATE_SEND_POTENTIALLY_PRIVATE_SEND = -2;
 
     @Relationship(type = "CREATES", direction = Relationship.OUTGOING)
     private List<BalanceEvent> balanceEvents = new ArrayList<>();
@@ -58,6 +49,8 @@ public class Transaction {
     private List<Transaction> previousRounds = new ArrayList<>();
 
     private int pstype = PRIVATE_SEND_NONE;
+    
+    private long receivedTime;
 
     private long size;
 
@@ -70,6 +63,14 @@ public class Transaction {
 
     @Relationship(type = "OUTPUT", direction = Relationship.OUTGOING)
     private List<TransactionOutput> vout = new ArrayList<>();
+
+    public List<BalanceEvent> getBalanceEvents() {
+        return balanceEvents;
+    }
+
+    public void setBalanceEvents(List<BalanceEvent> balanceEvents) {
+        this.balanceEvents = balanceEvents;
+    }
 
     public Block getBlock() {
         return block;
@@ -125,6 +126,14 @@ public class Transaction {
 
     public void setPstype(int pstype) {
         this.pstype = pstype;
+    }
+
+    public long getReceivedTime() {
+        return receivedTime;
+    }
+
+    public void setReceivedTime(long receivedTime) {
+        this.receivedTime = receivedTime;
     }
 
     public long getSize() {

@@ -31,12 +31,13 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
     
     @Query("MERGE (mempool:Mempool) "+
            "CREATE (tx:Transaction)-[:INCLUDED_IN]->(mempool) "+
-           "SET tx = {locktime: {0}, pstype: {1}, size: {2}, txid: {3}, version: {4}};")
+           "SET tx = {locktime: {0}, pstype: {1}, size: {2}, txid: {3}, version: {4}, receivedTime: {5}};")
     void createMempoolTransaction(long locktime, 
             int pstype, 
             long size, 
             String txid, 
-            int version);
+            int version,
+            long receivedTime);
    
     @Query("MATCH (block:Block {hash:{6}}) "+
            "CREATE (tx:Transaction)-[:INCLUDED_IN]->(block) "+
@@ -88,6 +89,16 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
         "MATCH (block:Block {hash:{1}}) CREATE (tx)-[:INCLUDED_IN]->(block);"
     )
     void moveMempooTransactionToBlock(String txid, String blockHash, int n);
+    
+    @Query(
+        "MATCH (tx:Transaction {txid:{0}})-[:INCLUDED_IN]->(:OrphanedBlock)\n"+
+        "SET tx.n = {2}\n"+
+        "WITH tx\n"+        
+        "MATCH (block:Block {hash:{1}})\n"+
+        "CREATE (tx)-[:INCLUDED_IN]->(block)\n"+
+        "RETURN true;"        
+    )
+    Boolean moveOrphanedTransactionToBlock(String txid, String blockhash, int n);
     
     @Query(
             "MATCH (:Block {height:{0}})<-[:INCLUDED_IN]-(tx:Transaction) RETURN tx.txid ORDER BY tx.n;"
