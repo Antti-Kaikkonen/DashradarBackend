@@ -12,7 +12,7 @@ public class PrivateSendTotals {
     private Long id;
 
     private long privatesend_tx_input_count;
-    
+   
     
     private long privatesend_mixing_0_01_output_count;
 
@@ -35,7 +35,7 @@ public class PrivateSendTotals {
 
     private long privatesend_mixing_1_0_spent_output_count;
 
-    
+    //TODO: Add total_size by type (0.01, 0.1, 1.0, 10.0, 100.0, ps, create_denoms)
     
     private long privatesend_mixing_0_01_count;
 
