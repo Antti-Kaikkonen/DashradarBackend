@@ -41,7 +41,7 @@ public interface BalanceEventRepository extends Neo4jRepository<BalanceEvent, Lo
     
     @Query(
             "MATCH (:OrphanedBlock)<-[:INCLUDED_IN]-(tx:Transaction)-[:CREATES]->(:BalanceEvent)<-[c:CURRENT_BALANCE]-(a:Address)\n"+
-            "WHERE NOT (tx)-[:INCLUDED_IN->(:Block)\n"+        
+            "WHERE NOT (tx)-[:INCLUDED_IN]->(:Block)\n"+        
             "DELETE c\n"+
             "RETURN a.address;"        
     )
@@ -50,7 +50,7 @@ public interface BalanceEventRepository extends Neo4jRepository<BalanceEvent, Lo
     
     @Query(
             "MATCH (:OrphanedBlock)<-[:INCLUDED_IN]-(tx:Transaction)-[:CREATES]->(be:BalanceEvent)\n"+
-            "WHERE NOT (tx)-[:INCLUDED_IN->(:Block)\n"+  
+            "WHERE NOT (tx)-[:INCLUDED_IN]->(:Block)\n"+  
             "DETACH DELETE be;"       
     )
     public void deleteAllBalanceEventsFromOrphanedBlocks();
