@@ -70,7 +70,7 @@ public class BalanceEventServiceImpl implements BalanceEventService {
         List<String> addresses = balanceEventRepository.deleteCurrentBalanceFromOrphanedBlocks();
         balanceEventRepository.deleteAllBalanceEventsFromOrphanedBlocks();
         for (String address: addresses) {
-            balanceEventRepository.updateCurrentBalance(address);
+            balanceEventRepository.updateCurrentBalance(address);//TODO: too slow when addresses have too many transactions
         }
     }
     

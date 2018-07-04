@@ -17,6 +17,8 @@ public class BalanceEvent {
     @GraphId
     private Long id;
 
+    //TODO int n to make updateCurrentBalance faster. n=0..size(address.transactions)
+    
     @Relationship(type = "CREATES", direction = Relationship.INCOMING)
     private Transaction transaction;
 

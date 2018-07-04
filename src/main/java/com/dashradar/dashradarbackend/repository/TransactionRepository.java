@@ -50,6 +50,8 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
             int version,
             String blockhash);
     
+    @Query("MATCH (tx:Transaction {txid: {0}}) SET tx.txlock=true RETURN true;")
+    Boolean setTxLockIfExists(String txid);
     
     @Query(
         "MATCH (spentOutput:TransactionOutput)-[:SPENT_IN]->(:TransactionInput)-[:INPUT]->(tx:Transaction {txid:{0}})\n" +

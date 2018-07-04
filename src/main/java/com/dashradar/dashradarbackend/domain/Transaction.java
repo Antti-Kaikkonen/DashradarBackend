@@ -55,6 +55,8 @@ public class Transaction {
     private long size;
 
     private String txid;
+    
+    private Boolean txlock;
 
     private int version;
    
@@ -150,6 +152,14 @@ public class Transaction {
 
     public void setTxid(String txid) {
         this.txid = txid;
+    }
+
+    public Boolean getTxlock() {
+        return txlock;
+    }
+
+    public void setTxlock(Boolean txlock) {
+        this.txlock = txlock;
     }
 
     public int getVersion() {
