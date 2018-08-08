@@ -60,6 +60,11 @@ public interface MultiInputHeuristicClusterRepository extends Neo4jRepository<Mu
     )
     public List<String> blockNonMixingTransactions(long height);
     
+    @Query(
+            "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block {height:{0}}) WHERE tx.n > 0 AND (tx.pstype < 3 OR tx.pstype > 7) RETURN tx.txid ORDER BY tx.n;"
+    )
+    public List<String> blockClusterizeableTransactions(long height);
+    
     
     @Query(
             "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block) WHERE (tx.pstype < 3 OR tx.pstype > 7) AND block.height >= height RETURN tx.txid;"

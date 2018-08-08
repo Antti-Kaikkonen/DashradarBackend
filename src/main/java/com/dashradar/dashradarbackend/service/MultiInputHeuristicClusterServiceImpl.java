@@ -21,7 +21,7 @@ public class MultiInputHeuristicClusterServiceImpl implements MultiInputHeuristi
     @Override
     public void clusteerizeBlock(long height) {
         
-        List<String> blockNonMixingTransactions = multiInputHeuristicClusterRepository.blockNonMixingTransactions(height);
+        List<String> blockNonMixingTransactions = multiInputHeuristicClusterRepository.blockClusterizeableTransactions(height);
         for (String tx : blockNonMixingTransactions) {
             clusterizeTransaction(tx);
         }
