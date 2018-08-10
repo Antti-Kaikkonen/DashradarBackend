@@ -30,7 +30,8 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
     List<String> getMempoolTxids();
     
     @Query("MERGE (mempool:Mempool) "+
-           "CREATE (tx:Transaction)-[:INCLUDED_IN]->(mempool) "+
+           "MERGE (tx:Transaction {txid:{3}}) "+//Does not create a duplicate transaction if it already exists in an orphaned block
+           "CREATE (tx)-[:INCLUDED_IN]->(mempool) " +
            "SET tx = {locktime: {0}, pstype: {1}, size: {2}, txid: {3}, version: {4}, receivedTime: {5}};")
     void createMempoolTransaction(long locktime, 
             int pstype, 
