@@ -25,4 +25,10 @@ public interface TransactionOutputRepository extends Neo4jRepository<Transaction
     )
     void createTransactionOutput(String txid, int n, long valueSat, List<String> addresses);
 
+    
+    @Query(
+            "MATCH (:Transaction {txid:{0}})-[:OUTPUT]->(output:TransactionOutput {n:{1}})\n" +
+            "RETURN output.valueSat;"
+    )
+    Long getOutputValue(String txid, int n);
 }
