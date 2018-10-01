@@ -81,6 +81,61 @@ public interface PrivateSendTotalsRepository extends Neo4jRepository<PrivateSend
     
     
     @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_100_0+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_100_0_size, 0)+sum(tx.size) as tx_size\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_100_0_size: tx_size};"
+    )
+    void compute_mixing_100_0_size(String blockhash);
+    
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_10_0+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_10_0_size, 0)+sum(tx.size) as tx_size\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_10_0_size: tx_size};"
+    )
+    void compute_mixing_10_0_size(String blockhash);
+    
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_1_0+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_1_0_size, 0)+sum(tx.size) as tx_size\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_1_0_size: tx_size};"
+    )
+    void compute_mixing_1_0_size(String blockhash);
+    
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_1+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_0_1_size, 0)+sum(tx.size) as tx_size\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_0_1_size: tx_size};"
+    )
+    void compute_mixing_0_1_size(String blockhash);
+    
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, previousTotals\n" +
+        "OPTIONAL MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction {pstype:"+Transaction.PRIVATE_SEND_MIXING_0_01+"})\n" +
+        "WITH b, coalesce(previousTotals.privatesend_mixing_0_01_size, 0)+sum(tx.size) as tx_size\n" +
+        "MERGE (b)-[:PRIVATESEND_TOTALS]->(pst:PrivateSendTotals)\n" +
+        "SET pst += {privatesend_mixing_0_01_size: tx_size};"
+    )
+    void compute_mixing_0_01_size(String blockhash);
+    
+    @Query(
     "MATCH (b:Block {hash:{0}})\n" +
     "OPTIONAL MATCH (previousTotals:PrivateSendTotals)<-[:PRIVATESEND_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
     "WITH b, previousTotals\n" +
