@@ -32,6 +32,8 @@ public class BlockChainTotals {
     private long total_block_rewards_sat;
 
     private long total_block_size;
+    
+    private long total_difficulty;
 
     private long total_fees_sat;
 
@@ -145,6 +147,14 @@ public class BlockChainTotals {
         this.total_block_size = total_block_size;
     }
 
+    public long getTotal_difficulty() {
+        return total_difficulty;
+    }
+
+    public void setTotal_difficulty(long total_difficulty) {
+        this.total_difficulty = total_difficulty;
+    }
+    
     public long getTotal_fees_sat() {
         return total_fees_sat;
     }

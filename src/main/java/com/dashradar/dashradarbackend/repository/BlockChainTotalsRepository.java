@@ -63,6 +63,18 @@ public interface BlockChainTotalsRepository extends Neo4jRepository<BlockChainTo
     )
     void compute_total_block_size(String blockhash);
     
+    @Query(
+        "MATCH (b:Block {hash:{0}})\n" +
+        "WITH b\n" +
+        "OPTIONAL MATCH (previousTotals:BlockChainTotals)<-[:BLOCKCHAIN_TOTALS]-(:Block)<-[:PREVIOUS_BLOCK]-(b)\n" +
+        "WITH b, coalesce(previousTotals.total_difficulty, 0)+b.difficulty as difficulty\n" +
+        "MERGE (b)-[:BLOCKCHAIN_TOTALS]->(bct:BlockChainTotals) \n" +
+        "SET bct += {\n" +
+        "	total_difficulty: difficulty\n" +
+        "};"
+    )
+    void compute_total_difficulty(String blockhash);
+    
     
     @Query(
         "MATCH (b:Block {hash:{0}})\n" +
