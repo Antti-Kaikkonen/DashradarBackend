@@ -46,7 +46,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void createDailyFeeSat(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND+"\n"+
         "WITH percentileCont(1.0*tx.feesSat/tx.size, {1}) as feePerByte\n" +
@@ -57,7 +57,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void createPrivateSendFeePerByteSat(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND+"\n"+
         "WITH percentileCont(tx.feesSat, {1}) as fee\n" +
@@ -68,7 +68,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void createPrivateSendFeeSat(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_CREATE_DENOMINATIONS+"\n"+
         "WITH percentileCont(1.0*tx.feesSat/tx.size, {1}) as feePerByte\n" +
@@ -79,7 +79,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void createCreateDenominationsFeePerByteSat(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_CREATE_DENOMINATIONS+"\n"+
         "WITH percentileCont(tx.feesSat, {1}) as fee\n" +
@@ -90,7 +90,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void createCreateDenominationsFeeSat(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_NONE+"\n"+
         "WITH percentileCont(1.0*tx.feesSat/tx.size, {1}) as feePerByte\n" +
@@ -101,7 +101,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void createRegularTransactionFeePerByteSat(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_NONE+"\n"+
         "WITH percentileCont(tx.feesSat, {1}) as fee\n" +
@@ -122,7 +122,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void create_tx_size(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND+"\n"+
         "WITH percentileCont(tx.size, {1}) as size\n" +
@@ -133,7 +133,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void create_privatesend_tx_size_size(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_NONE+"\n"+
         "WITH percentileCont(tx.size, {1}) as size\n" +
@@ -145,7 +145,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_MIXING_10_0+"\n"+
         "WITH percentileCont(tx.size, {1}) as size\n" +
@@ -157,7 +157,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_MIXING_1_0+"\n"+
         "WITH percentileCont(tx.size, {1}) as size\n" +
@@ -168,7 +168,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void create_mixing_1_0_tx_size_size(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_MIXING_0_1+"\n"+
         "WITH percentileCont(tx.size, {1}) as size\n" +
@@ -179,7 +179,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void create_mixing_0_1_tx_size_size(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_MIXING_0_01+"\n"+
         "WITH percentileCont(tx.size, {1}) as size\n" +
@@ -190,7 +190,7 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
     void create_mixing_0_01_tx_size_size(long day, double percentile);
     
     @Query(
-        "MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
+        "CYPHER planner=rule MATCH (b:Block)<-[:INCLUDED_IN]-(tx:Transaction)\n" +
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH tx WHERE tx.pstype = "+Transaction.PRIVATE_SEND_CREATE_DENOMINATIONS+"\n"+
         "WITH percentileCont(tx.size, {1}) as size\n" +
