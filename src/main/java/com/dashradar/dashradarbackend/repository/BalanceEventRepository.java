@@ -33,7 +33,7 @@ public interface BalanceEventRepository extends Neo4jRepository<BalanceEvent, Lo
     public void updateCurrentBalance(String address);
     
     @Query(
-            "(a:Address {address:{0}})-[c:CURRENT_BALANCE]->(:BalanceEvent)\n"+
+            "MATCH (a:Address {address:{0}})-[c:CURRENT_BALANCE]->(:BalanceEvent)\n"+
             "DELETE c;"
     )
     public void deleteCurrentBalance(String address);

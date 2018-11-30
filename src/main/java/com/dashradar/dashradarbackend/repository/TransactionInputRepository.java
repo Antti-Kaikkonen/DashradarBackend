@@ -25,4 +25,15 @@ public interface TransactionInputRepository extends Neo4jRepository<TransactionI
     )
     void createTransactionInput(String txid, long sequence, String outputTxid, int outputN);
     
+    @Query(
+            "MATCH (tx:Transaction {txid:{0}}) "+
+            "CREATE (tx)<-[:INPUT]-(input:TransactionInput) "+
+            "SET input = {sequence:{1}} "+
+            "WITH input " +        
+            "MATCH (:Transaction {txid:{2}})-[:OUTPUT]-(spentOutput:TransactionOutput {n:{3}}) " +
+            "CREATE (spentOutput)-[:SPENT_IN]->(input) " +
+            "RETURN spentOutput.valueSat;"
+    )
+    long createTransactionInputReturnOutputValue(String txid, long sequence, String outputTxid, int outputN);
+    
 }
