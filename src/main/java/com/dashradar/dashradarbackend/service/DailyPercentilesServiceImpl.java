@@ -50,6 +50,8 @@ public class DailyPercentilesServiceImpl implements DailyPercentilesService {
         dailyPercentilesRepository.create_mixing_0_1_tx_size_size(day, percentile);
         System.out.println("create_mixing_0_01_tx_size_size");
         dailyPercentilesRepository.create_mixing_0_01_tx_size_size(day, percentile);
+        System.out.println("create_mixing_0_001_tx_size_size");
+        dailyPercentilesRepository.create_mixing_0_001_tx_size_size(day, percentile);
         System.out.println("create_create_denominations_tx_size");
         dailyPercentilesRepository.create_create_denominations_tx_size(day, percentile);
     }

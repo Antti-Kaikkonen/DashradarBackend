@@ -1,6 +1,7 @@
 package com.dashradar.dashradarbackend.repository;
 
 import com.dashradar.dashradarbackend.domain.MultiInputHeuristicCluster;
+import com.dashradar.dashradarbackend.domain.Transaction;
 import com.dashradar.dashradarbackend.domain.dto.TransactionClusterData;
 import java.util.List;
 import java.util.Set;
@@ -56,18 +57,25 @@ public interface MultiInputHeuristicClusterRepository extends Neo4jRepository<Mu
     public List<Long> clusterOfTransaction(String txid);
     
     @Query(
-            "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block {height:{0}}) WHERE tx.pstype < 3 OR tx.pstype > 7 RETURN tx.txid;"
+            "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block {height:{0}}) WHERE\n"
+                    + "NOT tx.pstype IN ["+Transaction.PRIVATE_SEND_MIXING_0_001+","+Transaction.PRIVATE_SEND_MIXING_0_01+","+Transaction.PRIVATE_SEND_MIXING_0_1+",\n"
+                    + Transaction.PRIVATE_SEND_MIXING_1_0+","+Transaction.PRIVATE_SEND_MIXING_10_0+","+Transaction.PRIVATE_SEND_MIXING_100_0+"]\n"
+                    + "RETURN tx.txid;"
     )
     public List<String> blockNonMixingTransactions(long height);
-    
+   
     @Query(
-            "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block {height:{0}}) WHERE tx.n > 0 AND (tx.pstype < 3 OR tx.pstype > 7) RETURN tx.txid ORDER BY tx.n;"
+            "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block {height:{0}}) WHERE tx.n > 0 AND NOT tx.pstype IN ["+Transaction.PRIVATE_SEND_MIXING_0_001+","+Transaction.PRIVATE_SEND_MIXING_0_01+","+Transaction.PRIVATE_SEND_MIXING_0_1+",\n"
+                    + Transaction.PRIVATE_SEND_MIXING_1_0+","+Transaction.PRIVATE_SEND_MIXING_10_0+","+Transaction.PRIVATE_SEND_MIXING_100_0+"]\n"
+                    + "RETURN tx.txid ORDER BY tx.n;"
     )
     public List<String> blockClusterizeableTransactions(long height);
     
     
     @Query(
-            "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block) WHERE (tx.pstype < 3 OR tx.pstype > 7) AND block.height >= height RETURN tx.txid;"
+            "MATCH (tx:Transaction)-[:INCLUDED_IN]->(block:Block) WHERE NOT tx.pstype IN ["+Transaction.PRIVATE_SEND_MIXING_0_001+","+Transaction.PRIVATE_SEND_MIXING_0_01+","+Transaction.PRIVATE_SEND_MIXING_0_1+",\n"
+                    + Transaction.PRIVATE_SEND_MIXING_1_0+","+Transaction.PRIVATE_SEND_MIXING_10_0+","+Transaction.PRIVATE_SEND_MIXING_100_0+"]\n"
+                    + "AND block.height >= height RETURN tx.txid;"
     )
     public List<String> nonMixingTransactionsAfterHeight(long height);
     

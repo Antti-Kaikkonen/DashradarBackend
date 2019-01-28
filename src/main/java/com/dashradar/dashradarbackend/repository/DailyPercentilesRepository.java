@@ -218,6 +218,19 @@ public interface DailyPercentilesRepository extends Neo4jRepository<DailyPercent
         "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
         "WITH b\n" +
         "MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction)\n"+
+        "WHERE tx.pstype = "+Transaction.PRIVATE_SEND_MIXING_0_01+"\n"+
+        "WITH percentileCont(tx.size, {1}) as size\n" +
+        "MATCH (d:Day {day:{0}})\n" +
+        "MERGE (d)-[:DAILY_PERCENTILES]->(dp:DailyPercentiles {percentile:{1}})\n" +
+        "SET dp.mixing_0_01_tx_size = size;"
+    )
+    void create_mixing_0_001_tx_size_size(long day, double percentile);
+    
+    @Query(
+        "CYPHER planner=rule MATCH (b:Block)\n" +
+        "WHERE b.time >= {0}*86400 AND b.time < ({0}+1)*86400\n" +
+        "WITH b\n" +
+        "MATCH (b)<-[:INCLUDED_IN]-(tx:Transaction)\n"+
         "WHERE tx.pstype = "+Transaction.PRIVATE_SEND_CREATE_DENOMINATIONS+"\n"+
         "WITH percentileCont(tx.size, {1}) as size\n" +
         "MATCH (d:Day {day:{0}})\n" +

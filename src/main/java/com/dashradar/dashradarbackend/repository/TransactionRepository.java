@@ -15,13 +15,6 @@ public interface TransactionRepository extends Neo4jRepository<Transaction, Long
 
     List<Transaction> findByPstype(int pstype, @Depth int depth, Pageable pageable);
 
-    /*
-    INCOMPLETE
-     */
-    @Query(
-            "MATCH \n"
-            + "	(spentOutput:TransactionOutput)-[:SPENT_IN]->(input:TransactionInput {pstype: -1})-[:INPUT]->(tx:Transaction {txid: -1})-[:OUTPUT]->(output:TransactionOutput)")
-    Transaction findMixingTransaction();
     
     @Query(
             "MATCH (tx:Transaction)-[:INCLUDED_IN]->(:Mempool)\n"+

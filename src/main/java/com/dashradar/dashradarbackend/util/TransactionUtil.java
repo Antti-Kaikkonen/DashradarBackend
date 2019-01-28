@@ -16,6 +16,8 @@ public class TransactionUtil {
     public static final long COLLATERAL_OUTPUT = 400000l;
 
     public static final long COLLATERAL_OUTPUT_LEGACY = 4000000l;
+    
+    public static final long DENOM_0_001 = 100001l;
 
     public static final long DENOM_0_01 = 1000010l;
 
@@ -27,10 +29,13 @@ public class TransactionUtil {
 
     public static final long DENOM_1_0 = 100001000l;
 
-    public static List<Long> PRIVATESEND_DENOMINATIONS = Arrays.asList(DENOM_100_0, DENOM_10_0, DENOM_1_0, DENOM_0_1, DENOM_0_01);
+    public static List<Long> PRIVATESEND_DENOMINATIONS = Arrays.asList(DENOM_100_0, DENOM_10_0, DENOM_1_0, DENOM_0_1, DENOM_0_01, DENOM_0_001);
 
     public static int getPsType(Transaction transaction) {
         if (isMixingTransaction(transaction)) {
+            if (transaction.getVout().get(0).getValueSat() == DENOM_0_001) {
+                return Transaction.PRIVATE_SEND_MIXING_0_001;
+            }
             if (transaction.getVout().get(0).getValueSat() == DENOM_0_01) {
                 return Transaction.PRIVATE_SEND_MIXING_0_01;
             }

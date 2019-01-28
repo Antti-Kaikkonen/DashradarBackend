@@ -10,6 +10,8 @@ import org.neo4j.ogm.annotation.Relationship;
 public class Transaction {
 
     public static final int PRIVATE_SEND = 2;
+    
+    public static final int PRIVATE_SEND_MIXING_0_001 = 10;
 
     public static final int PRIVATE_SEND_COLLATERAL_PAYMENT = 9;
 
