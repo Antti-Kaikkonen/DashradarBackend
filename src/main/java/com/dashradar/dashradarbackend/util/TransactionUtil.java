@@ -9,11 +9,15 @@ public class TransactionUtil {
     
     public static final long LAST_LEGACY_COLLATERAL_OUTPUT_BLOCK = 616520l;//roughly
 
-    public static final long COLLATERAL_PAYMENT = 100000l;
+    public static final long COLLATERAL_PAYMENT = 10000l;
+    
+    public static final long COLLATERAL_PAYMENT_LEGACY2 = 100000l;
     
     public static final long COLLATERAL_PAYMENT_LEGACY = 1000000l;
     
-    public static final long COLLATERAL_OUTPUT = 400000l;
+    public static final long COLLATERAL_OUTPUT = 40000l;
+    
+    public static final long COLLATERAL_OUTPUT_LEGACY2 = 400000l;
 
     public static final long COLLATERAL_OUTPUT_LEGACY = 4000000l;
     
@@ -62,11 +66,12 @@ public class TransactionUtil {
     public static boolean isCollateralPaymentOutput(long valueSat) {
         if (valueSat % COLLATERAL_PAYMENT == 0 && valueSat < COLLATERAL_OUTPUT && valueSat > 0) return true;
         if (valueSat % COLLATERAL_PAYMENT_LEGACY == 0 && valueSat < COLLATERAL_OUTPUT_LEGACY && valueSat > 0) return true;
+        if (valueSat % COLLATERAL_PAYMENT_LEGACY2 == 0 && valueSat < COLLATERAL_OUTPUT_LEGACY2 && valueSat > 0) return true;
         return false;
     }
 
     public static boolean isMakeCollateralInputsOutput(long valueSat) {
-        return valueSat == COLLATERAL_OUTPUT || valueSat == COLLATERAL_OUTPUT_LEGACY;
+        return valueSat == COLLATERAL_OUTPUT ||valueSat == COLLATERAL_OUTPUT_LEGACY || valueSat == COLLATERAL_OUTPUT_LEGACY2;
     }
 
     public static boolean isDenomination(long valueSat) {
